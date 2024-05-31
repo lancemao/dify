@@ -43,6 +43,22 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/agent/:path*',
+        destination: `http://localhost:5000/agent/:path*`,
+      },
+      {
+        source: '/api/:path*',
+        destination: `http://localhost:5001/api/:path*`,
+      },
+      {
+        source: '/console/:path*',
+        destination: `http://localhost:5001/console/:path*`,
+      },
+    ]
+  },
   output: 'standalone',
 }
 

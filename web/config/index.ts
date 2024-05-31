@@ -27,8 +27,8 @@ else {
   publicApiPrefix = 'http://localhost:5001/api' // avoid browser private mode api cross origin
 }
 
-export const API_PREFIX: string = apiPrefix
-export const PUBLIC_API_PREFIX: string = publicApiPrefix
+export const API_PREFIX: string = '/console/api'
+export const PUBLIC_API_PREFIX: string = '/api'
 
 const EDITION = process.env.NEXT_PUBLIC_EDITION || globalThis.document?.body?.getAttribute('data-public-edition') || 'SELF_HOSTED'
 export const IS_CE_EDITION = EDITION === 'SELF_HOSTED'

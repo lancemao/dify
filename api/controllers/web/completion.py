@@ -24,6 +24,7 @@ from libs import helper
 from libs.helper import uuid_value
 from models.model import AppMode
 from services.app_generate_service import AppGenerateService
+from flask import request
 
 
 # define completion api for user
@@ -102,6 +103,7 @@ class ChatApi(WebApiResource):
         parser.add_argument('retriever_from', type=str, required=False, default='web_app', location='json')
 
         args = parser.parse_args()
+        user_token = request.cookies.get('_practical_ai_user')
 
         streaming = args['response_mode'] == 'streaming'
         args['auto_generate_name'] = False

@@ -128,7 +128,8 @@ class ApiTool(Tool):
         else:
             raise ValueError(f'Invalid response type {type(response)}')
     
-    def do_http_request(self, url: str, method: str, headers: dict[str, Any], parameters: dict[str, Any]) -> httpx.Response:
+    def do_http_request(self, url: str, method: str, headers: dict[str, Any], parameters: dict[str, Any],
+                        user_token: str) -> httpx.Response:
         """
             do http request depending on api bundle
         """
@@ -216,7 +217,10 @@ class ApiTool(Tool):
                 body = urlencode(body)
             else:
                 body = body
-        
+
+        # add user token to cookie
+        cookies['_practical_ai_user'] = user_token
+
         # do http request
         if method == 'get':
             response = ssrf_proxy.get(url, params=params, headers=headers, cookies=cookies, timeout=API_TOOL_DEFAULT_TIMEOUT, follow_redirects=True)
@@ -315,7 +319,8 @@ class ApiTool(Tool):
         headers = self.assembling_request(tool_parameters)
 
         # do http request
-        response = self.do_http_request(self.api_bundle.server_url, self.api_bundle.method, headers, tool_parameters)
+        response = self.do_http_request(self.api_bundle.server_url, self.api_bundle.method, headers, tool_parameters,
+                                        user_token)
 
         # validate response
         response = self.validate_and_parse_response(response)
