@@ -16,6 +16,7 @@ class AppGenerateService:
     @classmethod
     def generate(cls, app_model: App,
                  user: Union[Account, EndUser],
+                 user_token: str,
                  args: Any,
                  invoke_from: InvokeFrom,
                  streaming: bool = True) -> Union[dict, Generator[dict, None, None]]:
@@ -40,6 +41,7 @@ class AppGenerateService:
             return AgentChatAppGenerator().generate(
                 app_model=app_model,
                 user=user,
+                user_token=user_token,
                 args=args,
                 invoke_from=invoke_from,
                 stream=streaming

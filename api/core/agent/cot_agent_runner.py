@@ -301,6 +301,7 @@ class CotAgentRunner(BaseAgentRunner, ABC):
             tool=tool_instance,
             tool_parameters=tool_call_args,
             user_id=self.user_id,
+            user_token=self.user_token,
             tenant_id=self.tenant_id,
             message=self.message,
             invoke_from=self.application_generate_entity.invoke_from,

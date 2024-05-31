@@ -230,6 +230,7 @@ class AgentChatAppRunner(AppRunner):
             queue_manager=queue_manager,
             message=message,
             user_id=application_generate_entity.user_id,
+            user_token=application_generate_entity.user_token,
             memory=memory,
             prompt_messages=prompt_message,
             variables_pool=tool_variables,

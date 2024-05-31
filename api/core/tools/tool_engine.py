@@ -32,7 +32,7 @@ class ToolEngine:
     """
     @staticmethod
     def agent_invoke(tool: Tool, tool_parameters: Union[str, dict],
-                     user_id: str, tenant_id: str, message: Message, invoke_from: InvokeFrom,
+                     user_id: str, user_token: str, tenant_id: str, message: Message, invoke_from: InvokeFrom,
                      agent_tool_callback: DifyAgentCallbackHandler) \
                         -> tuple[str, list[tuple[MessageFile, bool]], ToolInvokeMeta]:
         """
@@ -60,7 +60,7 @@ class ToolEngine:
                 tool_inputs=tool_parameters
             )
 
-            meta, response = ToolEngine._invoke(tool, tool_parameters, user_id)
+            meta, response = ToolEngine._invoke(tool, tool_parameters, user_token)
             response = ToolFileMessageTransformer.transform_tool_invoke_messages(
                 messages=response, 
                 user_id=user_id, 
@@ -150,7 +150,7 @@ class ToolEngine:
             raise e
         
     @staticmethod
-    def _invoke(tool: Tool, tool_parameters: dict, user_id: str) \
+    def _invoke(tool: Tool, tool_parameters: dict, user_token: str) \
           -> tuple[ToolInvokeMeta, list[ToolInvokeMessage]]:
         """
         Invoke the tool with the given arguments.
@@ -164,7 +164,7 @@ class ToolEngine:
             'tool_icon': tool.identity.icon
         })
         try:
-            response = tool.invoke(user_id, tool_parameters)
+            response = tool.invoke(user_token, tool_parameters)
         except Exception as e:
             meta.error = str(e)
             raise ToolEngineInvokeError(meta)

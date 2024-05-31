@@ -183,7 +183,7 @@ class Tool(BaseModel, ABC):
 
         return result
 
-    def invoke(self, user_id: str, tool_parameters: dict[str, Any]) -> list[ToolInvokeMessage]:
+    def invoke(self, user_token: str, tool_parameters: dict[str, Any]) -> list[ToolInvokeMessage]:
         # update tool_parameters
         if self.runtime.runtime_parameters:
             tool_parameters.update(self.runtime.runtime_parameters)
@@ -192,7 +192,7 @@ class Tool(BaseModel, ABC):
         tool_parameters = self._transform_tool_parameters_type(tool_parameters)
 
         result = self._invoke(
-            user_id=user_id,
+            user_token=user_token,
             tool_parameters=tool_parameters,
         )
 
@@ -270,7 +270,7 @@ class Tool(BaseModel, ABC):
         return tool_parameters
 
     @abstractmethod
-    def _invoke(self, user_id: str, tool_parameters: dict[str, Any]) -> Union[ToolInvokeMessage, list[ToolInvokeMessage]]:
+    def _invoke(self, user_token: str, tool_parameters: dict[str, Any]) -> Union[ToolInvokeMessage, list[ToolInvokeMessage]]:
         pass
     
     def validate_credentials(self, credentials: dict[str, Any], parameters: dict[str, Any]) -> None:

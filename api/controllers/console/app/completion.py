@@ -120,6 +120,7 @@ class ChatMessageApi(Resource):
             response = AppGenerateService.generate(
                 app_model=app_model,
                 user=account,
+                user_token='in console',
                 args=args,
                 invoke_from=InvokeFrom.DEBUGGER,
                 streaming=streaming

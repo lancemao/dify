@@ -55,6 +55,7 @@ class BaseAgentRunner(AppRunner):
                  queue_manager: AppQueueManager,
                  message: Message,
                  user_id: str,
+                 user_token: str,
                  memory: Optional[TokenBufferMemory] = None,
                  prompt_messages: Optional[list[PromptMessage]] = None,
                  variables_pool: Optional[ToolRuntimeVariablePool] = None,
@@ -83,6 +84,7 @@ class BaseAgentRunner(AppRunner):
         self.queue_manager = queue_manager
         self.message = message
         self.user_id = user_id
+        self.user_token = user_token
         self.memory = memory
         self.history_prompt_messages = self.organize_agent_history(
             prompt_messages=prompt_messages or []

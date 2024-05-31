@@ -75,6 +75,7 @@ class AppGenerateEntity(BaseModel):
     inputs: dict[str, Any]
     files: list[FileVar] = []
     user_id: str
+    user_token: str | None
 
     # extras
     stream: bool
