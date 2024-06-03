@@ -130,6 +130,8 @@ class BaseAgentRunner(AppRunner):
             self.files = application_generate_entity.files
         else:
             self.files = []
+        self.query = None
+        self._current_thoughts: list[PromptMessage] = []
 
     def _repack_app_generate_entity(self, app_generate_entity: AgentChatAppGenerateEntity) \
             -> AgentChatAppGenerateEntity:
@@ -466,7 +468,7 @@ class BaseAgentRunner(AppRunner):
         for message in messages:
             if message.id == self.message.id:
                 continue
-            
+
             result.append(self.organize_agent_user_prompt(message))
             agent_thoughts: list[MessageAgentThought] = message.agent_thoughts
             if agent_thoughts:
@@ -547,3 +549,4 @@ class BaseAgentRunner(AppRunner):
                 return UserPromptMessage(content=prompt_message_contents)
         else:
             return UserPromptMessage(content=message.query)
+         
