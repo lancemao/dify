@@ -1,5 +1,6 @@
 import logging
 
+from flask import request
 from flask_restful import reqparse
 from werkzeug.exceptions import InternalServerError
 
@@ -36,11 +37,13 @@ class WorkflowRunApi(WebApiResource):
         parser.add_argument('inputs', type=dict, required=True, nullable=False, location='json')
         parser.add_argument('files', type=list, required=False, location='json')
         args = parser.parse_args()
+        user_token = request.cookies.get('_practical_ai_user')
 
         try:
             response = AppGenerateService.generate(
                 app_model=app_model,
                 user=end_user,
+                user_token=user_token,
                 args=args,
                 invoke_from=InvokeFrom.WEB_APP,
                 streaming=True

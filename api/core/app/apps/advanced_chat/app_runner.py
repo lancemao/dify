@@ -99,6 +99,7 @@ class AdvancedChatAppRunner(AppRunner):
         workflow_engine_manager.run_workflow(
             workflow=workflow,
             user_id=application_generate_entity.user_id,
+            user_token=application_generate_entity.user_token,
             user_from=UserFrom.ACCOUNT
             if application_generate_entity.invoke_from in [InvokeFrom.EXPLORE, InvokeFrom.DEBUGGER]
             else UserFrom.END_USER,

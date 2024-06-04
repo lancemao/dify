@@ -32,6 +32,7 @@ class WorkflowAppGenerator(BaseAppGenerator):
     def generate(self, app_model: App,
                  workflow: Workflow,
                  user: Union[Account, EndUser],
+                 user_token: str,
                  args: dict,
                  invoke_from: InvokeFrom,
                  stream: bool = True,
@@ -75,6 +76,7 @@ class WorkflowAppGenerator(BaseAppGenerator):
             inputs=self._get_cleaned_inputs(inputs, app_config),
             files=file_objs,
             user_id=user.id,
+            user_token=user_token,
             stream=stream,
             invoke_from=invoke_from,
             call_depth=call_depth

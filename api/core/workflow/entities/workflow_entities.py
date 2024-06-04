@@ -50,6 +50,7 @@ class WorkflowRunState:
                  start_at: float,
                  variable_pool: VariablePool,
                  user_id: str,
+                 user_token: str,
                  user_from: UserFrom,
                  invoke_from: InvokeFrom,
                  workflow_call_depth: int):
@@ -58,6 +59,7 @@ class WorkflowRunState:
         self.app_id = workflow.app_id
         self.workflow_type = WorkflowType.value_of(workflow.type)
         self.user_id = user_id
+        self.user_token = user_token
         self.user_from = user_from
         self.invoke_from = invoke_from
         self.workflow_call_depth = workflow_call_depth

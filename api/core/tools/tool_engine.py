@@ -118,7 +118,7 @@ class ToolEngine:
 
     @staticmethod
     def workflow_invoke(tool: Tool, tool_parameters: dict,
-                        user_id: str, workflow_id: str, 
+                        user_token: str, workflow_id: str,
                         workflow_tool_callback: DifyWorkflowCallbackHandler,
                         workflow_call_depth: int) \
                               -> list[ToolInvokeMessage]:
@@ -135,7 +135,7 @@ class ToolEngine:
             if isinstance(tool, WorkflowTool):
                 tool.workflow_call_depth = workflow_call_depth + 1
 
-            response = tool.invoke(user_id, tool_parameters)
+            response = tool.invoke(user_token, tool_parameters)
 
             # hit the callback handler
             workflow_tool_callback.on_tool_end(

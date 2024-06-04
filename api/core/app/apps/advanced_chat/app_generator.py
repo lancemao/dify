@@ -32,6 +32,7 @@ class AdvancedChatAppGenerator(MessageBasedAppGenerator):
     def generate(self, app_model: App,
                  workflow: Workflow,
                  user: Union[Account, EndUser],
+                 user_token: str,
                  args: dict,
                  invoke_from: InvokeFrom,
                  stream: bool = True) \
@@ -93,6 +94,7 @@ class AdvancedChatAppGenerator(MessageBasedAppGenerator):
             query=query,
             files=file_objs,
             user_id=user.id,
+            user_token=user_token,
             stream=stream,
             invoke_from=invoke_from,
             extras=extras

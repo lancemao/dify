@@ -37,6 +37,7 @@ class BaseNode(ABC):
     app_id: str
     workflow_id: str
     user_id: str
+    user_token: str
     user_from: UserFrom
     invoke_from: InvokeFrom
     
@@ -55,12 +56,14 @@ class BaseNode(ABC):
                  user_from: UserFrom,
                  invoke_from: InvokeFrom,
                  config: dict,
+                 user_token: str,
                  callbacks: list[BaseWorkflowCallback] = None,
                  workflow_call_depth: int = 0) -> None:
         self.tenant_id = tenant_id
         self.app_id = app_id
         self.workflow_id = workflow_id
         self.user_id = user_id
+        self.user_token = user_token
         self.user_from = user_from
         self.invoke_from = invoke_from
         self.workflow_call_depth = workflow_call_depth

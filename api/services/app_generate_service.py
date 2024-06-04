@@ -16,9 +16,9 @@ class AppGenerateService:
     @classmethod
     def generate(cls, app_model: App,
                  user: Union[Account, EndUser],
-                 user_token: str,
                  args: Any,
                  invoke_from: InvokeFrom,
+                 user_token: str = '',
                  streaming: bool = True) -> Union[dict, Generator[dict, None, None]]:
         """
         App Content Generate
@@ -26,6 +26,7 @@ class AppGenerateService:
         :param user: user
         :param args: args
         :param invoke_from: invoke from
+        :param user_token: token of end user
         :param streaming: streaming
         :return:
         """
@@ -60,6 +61,7 @@ class AppGenerateService:
                 app_model=app_model,
                 workflow=workflow,
                 user=user,
+                user_token=user_token,
                 args=args,
                 invoke_from=invoke_from,
                 stream=streaming
@@ -70,6 +72,7 @@ class AppGenerateService:
                 app_model=app_model,
                 workflow=workflow,
                 user=user,
+                user_token=user_token,
                 args=args,
                 invoke_from=invoke_from,
                 stream=streaming

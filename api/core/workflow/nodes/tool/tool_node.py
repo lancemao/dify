@@ -58,7 +58,7 @@ class ToolNode(BaseNode):
             messages = ToolEngine.workflow_invoke(
                 tool=tool_runtime,
                 tool_parameters=parameters,
-                user_id=self.user_id,
+                user_token=self.user_token,
                 workflow_id=self.workflow_id, 
                 workflow_tool_callback=DifyWorkflowCallbackHandler(),
                 workflow_call_depth=self.workflow_call_depth,
