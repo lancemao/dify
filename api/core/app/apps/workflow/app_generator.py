@@ -20,6 +20,7 @@ from core.app.entities.app_invoke_entities import InvokeFrom, WorkflowAppGenerat
 from core.app.entities.task_entities import WorkflowAppBlockingResponse, WorkflowAppStreamResponse
 from core.file.message_file_parser import MessageFileParser
 from core.model_runtime.errors.invoke import InvokeAuthorizationError, InvokeError
+from core.ops.ops_trace_manager import TraceQueueManager
 from extensions.ext_database import db
 from models.account import Account
 from models.model import App, EndUser
@@ -29,15 +30,16 @@ logger = logging.getLogger(__name__)
 
 
 class WorkflowAppGenerator(BaseAppGenerator):
-    def generate(self, app_model: App,
-                 workflow: Workflow,
-                 user: Union[Account, EndUser],
-                 user_token: str,
-                 args: dict,
-                 invoke_from: InvokeFrom,
-                 stream: bool = True,
-                 call_depth: int = 0) \
-            -> Union[dict, Generator[dict, None, None]]:
+    def generate(
+        self, app_model: App,
+        workflow: Workflow,
+        user: Union[Account, EndUser],
+        user_token: str,
+        args: dict,
+        invoke_from: InvokeFrom,
+        stream: bool = True,
+        call_depth: int = 0,
+    ) -> Union[dict, Generator[dict, None, None]]:
         """
         Generate App response.
 
@@ -47,6 +49,7 @@ class WorkflowAppGenerator(BaseAppGenerator):
         :param args: request args
         :param invoke_from: invoke from source
         :param stream: is stream
+        :param call_depth: call depth
         """
         inputs = args['inputs']
 
@@ -69,6 +72,9 @@ class WorkflowAppGenerator(BaseAppGenerator):
             workflow=workflow
         )
 
+        # get tracing instance
+        trace_manager = TraceQueueManager(app_model.id)
+
         # init application generate entity
         application_generate_entity = WorkflowAppGenerateEntity(
             task_id=str(uuid.uuid4()),
@@ -79,7 +85,8 @@ class WorkflowAppGenerator(BaseAppGenerator):
             user_token=user_token,
             stream=stream,
             invoke_from=invoke_from,
-            call_depth=call_depth
+            call_depth=call_depth,
+            trace_manager=trace_manager
         )
 
         return self._generate(
@@ -89,17 +96,16 @@ class WorkflowAppGenerator(BaseAppGenerator):
             application_generate_entity=application_generate_entity,
             invoke_from=invoke_from,
             stream=stream,
-            call_depth=call_depth
         )
 
-    def _generate(self, app_model: App,
-                 workflow: Workflow,
-                 user: Union[Account, EndUser],
-                 application_generate_entity: WorkflowAppGenerateEntity,
-                 invoke_from: InvokeFrom,
-                 stream: bool = True,
-                 call_depth: int = 0) \
-            -> Union[dict, Generator[dict, None, None]]:
+    def _generate(
+        self, app_model: App,
+        workflow: Workflow,
+        user: Union[Account, EndUser],
+        application_generate_entity: WorkflowAppGenerateEntity,
+        invoke_from: InvokeFrom,
+        stream: bool = True,
+    ) -> Union[dict, Generator[dict, None, None]]:
         """
         Generate App response.
 
@@ -133,7 +139,7 @@ class WorkflowAppGenerator(BaseAppGenerator):
             workflow=workflow,
             queue_manager=queue_manager,
             user=user,
-            stream=stream
+            stream=stream,
         )
 
         return WorkflowAppGenerateResponseConverter.convert(
@@ -160,10 +166,10 @@ class WorkflowAppGenerator(BaseAppGenerator):
         """
         if not node_id:
             raise ValueError('node_id is required')
-        
+
         if args.get('inputs') is None:
             raise ValueError('inputs is required')
-        
+
         extras = {
             "auto_generate_conversation_name": False
         }

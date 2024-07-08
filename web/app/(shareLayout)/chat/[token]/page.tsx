@@ -1,15 +1,11 @@
 'use client'
-import type { FC } from 'react'
+
 import React, { useEffect, useState } from 'react'
-
-import type { IMainProps } from '@/app/components/share/chat'
-import ChatWithHistoryWrap from '@/app/components/base/chat/chat-with-history'
 import * as dd from 'dingtalk-jsapi'
+import ChatWithHistoryWrap from '@/app/components/base/chat/chat-with-history'
 
-const Chat: FC<IMainProps> = () => {
-
+const Chat = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   useEffect(() => {
     // fetch('/agent/dingtalk/test')
     //   .then((data) => {
@@ -19,11 +15,11 @@ const Chat: FC<IMainProps> = () => {
     //   })
 
     const queryParams = new URLSearchParams(document.location.search);
-    const corpId = queryParams.get('corpId');
-    if (dd.env.platform != 'notInDingTalk' && corpId) {
-      dd.ready(function () {
+    const corpId = queryParams.get('corpId')
+    if (dd.env.platform !== 'notInDingTalk' && corpId) {
+      dd.ready(() => {
         dd.runtime.permission.requestAuthCode({
-          corpId: corpId
+          corpId
         }).then((result) => {
           // alert(result.code)
           getUserInfo(result.code)
@@ -51,6 +47,7 @@ const Chat: FC<IMainProps> = () => {
         alert("获取用户信息失败：" + JSON.stringify(err));
       })
   }
+
   return (
     <>
       {
