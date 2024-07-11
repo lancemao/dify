@@ -34,6 +34,7 @@ const nextConfig = {
     // https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors
     ignoreBuildErrors: true,
   },
+  reactStrictMode: true,
   async redirects() {
     return [
       {
@@ -47,15 +48,15 @@ const nextConfig = {
     return [
       {
         source: '/agent/:path*',
-        destination: `http://localhost:5000/agent/:path*`,
+        destination: 'http://localhost:5000/agent/:path*',
       },
       {
         source: '/api/:path*',
-        destination: `http://localhost:5001/api/:path*`,
+        destination: 'http://localhost:5001/api/:path*',
       },
       {
         source: '/console/:path*',
-        destination: `http://localhost:5001/console/:path*`,
+        destination: 'http://localhost:5001/console/:path*',
       },
     ]
   },
